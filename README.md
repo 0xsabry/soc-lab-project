@@ -144,12 +144,12 @@ Every screenshot used in the project report is included below. They provide an a
 
 For the complete walkthrough, metrics, alert details, screenshots, and incident-response recommendations, view the **[Live Interactive Web Report](https://0xsabry.github.io/soc-lab-project/)**, open **[SOC_Lab_Project_0xSABRY.html](SOC_Lab_Project_0xSABRY.html)**, or see the included PDF report.
 
-## Portfolio Cybersecurity Projects
+## Related Cybersecurity Portfolio Projects
 
-| Project | Focus Area | Live Report | Documentation |
-| --- | --- | --- | --- |
-| **SOC Lab — Automated Threat Detection** | SIEM (Wazuh), ATT&CK, Detection | [🌐 Live Web Report](https://0xsabry.github.io/soc-lab-project/) | [SOC_Lab_Project_0xSABRY.pdf](SOC_Lab_Project_0xSABRY.pdf) |
-| **Metasploitable 2 Penetration Test** | Pentesting, GVM, Root Exploitation | [🌐 Live Pentest Report](https://0xsabry.github.io/soc-lab-project/metasploitable2-penetration-test/) | [Pentest PDF Report](metasploitable2-penetration-test/docs/Metasploitable2-Penetration-Testing-Report.pdf) |
+| Project | Focus Area | Repository & Live Report |
+| --- | --- | --- |
+| **SOC Lab — Automated Threat Detection** | SIEM (Wazuh), ATT&CK, Threat Detection | [🌐 Live Web Report](https://0xsabry.github.io/soc-lab-project/) · [🐙 Repository](https://github.com/0xsabry/soc-lab-project) |
+| **Metasploitable 2 Penetration Test** | Pentesting, GVM, Root Exploitation | [🌐 Live Pentest Report](https://0xsabry.github.io/metasploitable2-penetration-test/) · [🐙 Repository](https://github.com/0xsabry/metasploitable2-penetration-test) |
 
 ## Project Assets
 
@@ -158,11 +158,7 @@ For the complete walkthrough, metrics, alert details, screenshots, and incident-
 ├── index.html                             # Live SOC Lab Web Report
 ├── SOC_Lab_Project_0xSABRY.html           # Interactive SOC report source
 ├── SOC_Lab_Project_0xSABRY.pdf            # SOC Lab portable report
-├── metasploitable2-penetration-test/       # Metasploitable 2 Gray-Box Pentest Project
-│   ├── index.html                         # Live Pentest Web Report
-│   ├── docs/                              # Full 11-page Pentest PDF report
-│   ├── images/                            # 11-page evidence gallery screenshots
-│   └── README.md                          # Pentest project documentation
+├── SOC_Lab_Project_0xSABRY.docx           # Editable report source
 ├── images/                                # Complete SOC evidence gallery
 └── soc-lab-project-0xSABRY.zip            # Packaged project archive
 ```

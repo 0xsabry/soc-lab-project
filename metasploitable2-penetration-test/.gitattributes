@@ -1,6 +1,0 @@
-# Normalize documentation across operating systems.
-* text=auto
-*.md text eol=lf
-
-# Assessment evidence is binary.
-*.pdf binary
