@@ -1,0 +1,10 @@
+# Normalize text files consistently across operating systems.
+* text=auto
+*.md text eol=lf
+*.html text eol=lf
+
+# Keep project assets binary.
+*.png binary
+*.pdf binary
+*.docx binary
+*.zip binary

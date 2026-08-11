@@ -106,19 +106,40 @@ The combined detection workflow identified 12 techniques spanning six ATT&CK tac
 | Defense Evasion | `T1027` Obfuscated Files, `T1564.004` NTFS Alternate Data Streams |
 | Command and Control | `T1090.003` Multi-hop Proxy |
 
-## Evidence
+## Evidence Gallery
 
-<p align="center">
-  <img src="images/image1.png" alt="Active Wazuh endpoint" width="78%" />
-</p>
+Every screenshot used in the project report is included below. They provide an auditable visual trail from the monitored endpoint, through simulated activity, to alerting and analysis results.
 
-<p align="center"><em>Wazuh endpoint dashboard showing the monitored Ubuntu agent.</em></p>
-
-<p align="center">
-  <img src="images/image14.png" alt="ThreatScope analysis report" width="78%" />
-</p>
-
-<p align="center"><em>ThreatScope report summarizing the security-log analysis.</em></p>
+<table>
+  <tr>
+    <td width="50%" align="center"><img src="images/image1.png" alt="Wazuh endpoint dashboard showing the active Ubuntu agent" /><br /><sub><strong>01 · Endpoint visibility</strong><br />Wazuh dashboard confirming the monitored Ubuntu agent is active.</sub></td>
+    <td width="50%" align="center"><img src="images/image2.png" alt="Hydra SSH brute-force simulation from WSL" /><br /><sub><strong>02 · SSH attack simulation</strong><br />Hydra running a controlled dictionary-based SSH test from WSL.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/image3.png" alt="Wazuh threat-hunting events for SSH brute force" /><br /><sub><strong>03 · Brute-force detection</strong><br />Wazuh Threat Hunting view with 339 SSH-related events.</sub></td>
+    <td align="center"><img src="images/image4.png" alt="Wazuh MITRE ATT&CK dashboard overview" /><br /><sub><strong>04 · ATT&CK overview</strong><br />Wazuh tactic and technique coverage across detected activity.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/image5.png" alt="Wazuh MITRE ATT&CK dashboard filtered to lateral movement" /><br /><sub><strong>05 · Lateral movement analysis</strong><br />ATT&CK dashboard filtered to SSH-related lateral movement behavior.</sub></td>
+    <td align="center"><img src="images/image6.png" alt="PowerShell download cradle simulation and log export" /><br /><sub><strong>06 · PowerShell simulation</strong><br />Controlled IEX download-cradle attempt and Event Log export.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/image7.png" alt="ThreatScope detection engine ready state" /><br /><sub><strong>07 · ThreatScope readiness</strong><br />Custom analysis tool with its detection rules loaded.</sub></td>
+    <td align="center"><img src="images/image8.png" alt="ThreatScope analysis report for PowerShell logs" /><br /><sub><strong>08 · Critical PowerShell analysis</strong><br />ThreatScope report for 1,008 PowerShell log lines.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/image9.png" alt="ThreatScope findings grouped by category" /><br /><sub><strong>09 · Findings by category</strong><br />Defense evasion, discovery, malware, and exploit detections.</sub></td>
+    <td align="center"><img src="images/image10.png" alt="ThreatScope IOC extraction and MITRE ATT&CK coverage" /><br /><sub><strong>10 · IOC enrichment</strong><br />Extracted indicators paired with ATT&CK technique coverage.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/image11.png" alt="ThreatScope recommendations and report summary" /><br /><sub><strong>11 · Response recommendations</strong><br />ThreatScope remediation guidance and report summary.</sub></td>
+    <td align="center"><img src="images/image12.png" alt="Wazuh threat-hunting events for privilege escalation" /><br /><sub><strong>12 · Privilege-escalation detection</strong><br />Wazuh events showing sudo-to-root and PAM activity.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/image13.png" alt="Wazuh MITRE ATT&CK dashboard filtered to privilege escalation" /><br /><sub><strong>13 · Privilege-escalation mapping</strong><br />ATT&CK view focused on sudo and valid-account activity.</sub></td>
+    <td align="center"><img src="images/image14.png" alt="ThreatScope full security-log analysis report" /><br /><sub><strong>14 · Full log-analysis report</strong><br />ThreatScope summary for a 17,697-line security-log analysis.</sub></td>
+  </tr>
+</table>
 
 For the complete walkthrough, metrics, alert details, screenshots, and incident-response recommendations, open **[SOC_Lab_Project_0xSABRY.html](SOC_Lab_Project_0xSABRY.html)** in a modern browser or see the included PDF report.
 
@@ -129,7 +150,7 @@ For the complete walkthrough, metrics, alert details, screenshots, and incident-
 ├── SOC_Lab_Project_0xSABRY.html   # Interactive project report
 ├── SOC_Lab_Project_0xSABRY.pdf    # Portable report
 ├── SOC_Lab_Project_0xSABRY.docx   # Editable report source
-├── images/                        # Report screenshots and evidence
+├── images/                        # Complete 14-image evidence gallery
 └── soc-lab-project-0xSABRY.zip    # Packaged project archive
 ```
 
