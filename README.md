@@ -139,7 +139,7 @@ This repository contains documentation and evidence from an authorized, isolated
 
 ## Author
 
-**Mohamed Sabry** · SOC Analyst · DFIR  
+**Mohamed Sabry** · SOC Analyst · DFIR<br>
 GitHub: [@0xsabry](https://github.com/0xsabry)
 
 ---
