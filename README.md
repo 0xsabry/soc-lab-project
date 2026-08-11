@@ -17,7 +17,8 @@
   <a href="#attack-scenarios">Scenarios</a> ·
   <a href="#lab-architecture">Architecture</a> ·
   <a href="#evidence">Evidence</a> ·
-  <a href="#project-assets">Assets</a>
+  <a href="#project-assets">Assets</a> ·
+  <a href="https://0xsabry.github.io/soc-lab-project/"><strong>🌐 Live Web Report</strong></a>
 </p>
 
 ---
@@ -141,7 +142,7 @@ Every screenshot used in the project report is included below. They provide an a
   </tr>
 </table>
 
-For the complete walkthrough, metrics, alert details, screenshots, and incident-response recommendations, open **[SOC_Lab_Project_0xSABRY.html](SOC_Lab_Project_0xSABRY.html)** in a modern browser or see the included PDF report.
+For the complete walkthrough, metrics, alert details, screenshots, and incident-response recommendations, view the **[Live Interactive Web Report](https://0xsabry.github.io/soc-lab-project/)**, open **[SOC_Lab_Project_0xSABRY.html](SOC_Lab_Project_0xSABRY.html)**, or see the included PDF report.
 
 ## Project Assets
 
