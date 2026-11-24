@@ -22,8 +22,8 @@ CONFIG = {
     "status": "HUNTING",  # Top-right live badge (e.g. HUNTING, MONITORING, BUILDING)
     
     # Profile Card Metadata
-    "role": "SOC Analyst & DFIR Specialist",
-    "based": "Cairo, Egypt",
+    "role": "Cybersecurity Analyst | SOC | DFIR",
+    "based": "Egypt",
     "mode": "Threat Hunting / SIEM / Incident Response",
     "writes": "0xsabry.github.io / Notes from the SOC",
     
@@ -54,7 +54,7 @@ CONFIG = {
     "linkedin_url": "https://www.linkedin.com/in/mohamed-sabry-hamdan/",
     "portfolio_url": "https://0xsabry.github.io/soc-lab-project/",
     "academy_url": "https://www.linkedin.com/company/zero-2-aura/",
-    "email": "2201381@student.eelu.edu.eg",
+    "email": "mohamedsabry01144@gmail.com",
     
     # Source Avatar
     "avatar_path": "assets/avatar.png"
@@ -610,7 +610,7 @@ def generate_profile_readme_md(cfg):
 
 ## <img src="assets/icons/user.svg" width="23" alt="" /> Hey, I'm Mohamed
 
-**SOC Analyst & DFIR Specialist** specializing in security monitoring, proactive threat detection, digital forensics, and security tool engineering. Currently completing intensive SOC & cybersecurity tracks at **NTI** (Fortinet SecOps) and **ITI** (Enterprise Network Hardening), working in DFIR at the **Digital Egypt Pioneers Initiative (DEPI)**, and serving as a **Cybersecurity Instructor at Zero2Aura**.
+**Cybersecurity Analyst | SOC | Incident Response | DFIR | Detection** — focused on security monitoring, threat detection, digital forensics, and detection engineering. Open to suitable roles in Egypt and international remote roles open to Egypt-based candidates.
 
 <p align="center">
   <img src="assets/divider.svg" width="900" alt="" />
@@ -687,27 +687,26 @@ def generate_profile_readme_md(cfg):
 
 | Project | Description | Stack / Focus |
 | :--- | :--- | :--- |
-| 🔍 **[ThreatScopeX](https://github.com/0xsabry/ThreatScopeX)** | Advanced log intelligence and threat detection engine with 115+ built-in detection rules | Python, MITRE ATT&CK, Sigma, STIX 2.1 |
+| 🔍 **[ThreatScopeX](https://github.com/0xsabry/ThreatScopeX)** | Advanced log intelligence and threat detection engine with 143 built-in detection rules (v3.0.0) | Python, MITRE ATT&CK, Sigma, STIX 2.1 |
 | 📑 **[IR-Report-Generator](https://github.com/0xsabry/IR-Report-Generator)** | Browser-based incident response reporting tool supporting 40+ security tool artifacts | HTML5, CSS3, JS, MITRE Navigator |
 | 🛡️ **[SOC Lab Project](https://0xsabry.github.io/soc-lab-project/)** | End-to-end enterprise attack simulation, Wazuh detection, and automated IR simulation | Wazuh, Sysmon, EventLogs, Ubuntu, PowerShell |
-| 🎣 **[Phishing IR Framework](https://github.com/0xsabry)** | Complete 6-phase email forensic investigation framework aligned with NIST 800-61 | Email Header Forensics, IOC Extraction |
 
 <p align="center">
   <img src="assets/divider.svg" width="900" alt="" />
 </p>
 
-## <img src="assets/icons/briefcase.svg" width="23" alt="" /> Experience & Internships
+## <img src="assets/icons/briefcase.svg" width="23" alt="" /> Experience & Training
 
 <p>
-<img src="assets/icons/target.svg" width="17" alt="" /> &nbsp; <strong>National Telecommunication Institute (NTI)</strong> | <em>SOC Analyst Intern (FortiAnalyzer + FortiSIEM)</em> | <strong>August 2026 – Present</strong><br/>
-• Completing intensive SOC Analyst track focused on Fortinet Security Operations workflows: event examination, event handlers, automated playbooks, forensic analysis, and threat intelligence reporting.<br/>
-• Using <strong>FortiAnalyzer</strong> for log collection and analysis, FortiView searches, incident management, threat hunting, custom reports, and Incident Response playbook creation and monitoring.<br/>
-• Operating <strong>FortiSIEM</strong> for real-time and historic searches, event correlation, custom incident rules, dashboard configuration, and UEBA-based threat hunting with FortiGuard Threat Intelligence.<br/>
-• Practicing detection, analysis, and remediation of security incidents using traditional and AI/ML-assisted methods; preparing for <strong>FCP – Security Operations</strong> and <strong>NSE 6 FortiSIEM Analyst</strong> certifications.
+<img src="assets/icons/target.svg" width="17" alt="" /> &nbsp; <strong>National Telecommunication Institute (NTI)</strong> | <em>SOC Training Program (FortiAnalyzer + FortiSIEM) — completed</em> | <strong>Aug 2026 – Sep 2026</strong><br/>
+• Completed an intensive SOC training program focused on Fortinet Security Operations workflows: event examination, event handlers, automated playbooks, forensic analysis, and threat intelligence reporting.<br/>
+• Used <strong>FortiAnalyzer</strong> for log collection and analysis, FortiView searches, incident management, threat hunting, custom reports, and Incident Response playbook creation and monitoring.<br/>
+• Used <strong>FortiSIEM</strong> for real-time and historic searches, event correlation, custom incident rules, dashboard configuration, and UEBA-based threat hunting with FortiGuard Threat Intelligence.<br/>
+• Practiced detection, analysis, and remediation of security incidents using traditional and AI/ML-assisted methods.
 </p>
 
 <p>
-<img src="assets/icons/shield.svg" width="17" alt="" /> &nbsp; <strong>Information Technology Institute (ITI)</strong> | <em>Cybersecurity Intern</em> | <strong>April 2026 – Present</strong><br/>
+<img src="assets/icons/shield.svg" width="17" alt="" /> &nbsp; <strong>Information Technology Institute (ITI)</strong> | <em>Cybersecurity Intern</em> | <strong>2026 – Present</strong><br/>
 • Engineered and hardened multi-zone enterprise network architecture in Cisco Packet Tracer with multi-VLAN Layer 2/3 segmentation, dynamic DHCP, and multi-area OSPF routing for secure high-availability communication.<br/>
 • Designed and enforced Extended ACLs to control traffic flow, isolate wireless zones, and restrict management-plane and server access to authorized hosts.<br/>
 • Hardened network appliances by enforcing cryptographic SSH on VTY lines and restricting management access; successfully defended architecture before ITI evaluation panel.<br/>
@@ -715,22 +714,22 @@ def generate_profile_readme_md(cfg):
 </p>
 
 <p>
-<img src="assets/icons/briefcase.svg" width="17" alt="" /> &nbsp; <strong>Digital Egypt Pioneers Initiative (DEPI)</strong> | <em>Digital Forensics Investigator</em> | <strong>Jan 2025 – Present</strong><br/>
-• Conducting digital forensics examinations, artifact analysis, and memory/disk investigation.
+<img src="assets/icons/briefcase.svg" width="17" alt="" /> &nbsp; <strong>Digital Egypt Pioneers Initiative (DEPI)</strong> | <em>Digital Forensics Trainee</em> | <strong>Nov 2025 – Jul 2026</strong><br/>
+• Forensics practice in CTF and lab investigations with Wireshark/Tshark, Autopsy, FTK Imager and Volatility; evidence handling and chain-of-custody documentation.
 </p>
 
 <p>
-<img src="assets/icons/award.svg" width="17" alt="" /> &nbsp; <strong><a href="{cfg["academy_url"]}">Zero2Aura Tech Academy</a></strong> | <em>Cybersecurity Instructor</em> | <strong>Oct 2025 – Present</strong><br/>
-• Training students and aspiring security analysts in Cybersecurity, DFIR, Penetration Testing, and Networking.
+<img src="assets/icons/award.svg" width="17" alt="" /> &nbsp; <strong><a href="{cfg["academy_url"]}">Zero2Aura Tech Academy</a></strong> | <em>Cybersecurity Instructor (part-time)</em> | <strong>Oct 2025 – Sep 2026</strong><br/>
+• Delivered SOC fundamentals training on security operations, threat detection and incident response to entry-level learners. Built hands-on exercises and walkthroughs for blue-team investigation practice.
 </p>
 
 <p>
-<img src="assets/icons/shield.svg" width="17" alt="" /> &nbsp; <strong>Digital Egypt Pioneers Initiative (DEPI)</strong> | <em>Cyber Security Incident Response Analyst</em> | <strong>Oct 2024 – May 2025</strong><br/>
-• Analyzed security alerts, mapped incidents to MITRE ATT&CK, and executed IR playbooks.
+<img src="assets/icons/shield.svg" width="17" alt="" /> &nbsp; <strong>Digital Egypt Pioneers Initiative (DEPI)</strong> | <em>Incident Response Trainee — program completed</em> | <strong>Oct 2024 – May 2025</strong><br/>
+• Investigated alerts and logs for IOCs in simulated enterprise environments; Wazuh, Splunk, TryHackMe SOC labs.
 </p>
 
 <p>
-<img src="assets/icons/globe.svg" width="17" alt="" /> &nbsp; <strong>The British University in Egypt (BUE)</strong> | <em>Cyber Security Intern</em> | <strong>Jul 2024</strong>
+<img src="assets/icons/globe.svg" width="17" alt="" /> &nbsp; <strong>The British University in Egypt (BUE)</strong> | <em>Cyber Security course (course completion, 20 hours)</em> | <strong>12–17 Aug 2024</strong>
 </p>
 
 <p align="center">
