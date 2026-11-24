@@ -262,7 +262,7 @@ def generate_desktop_banner_svg(ascii_grid, cfg):
 {art_block}
     </g>
 
-    <text class="lbl" x="384" y="64">PROFILE / SOC ANALYST</text>
+    <text class="lbl" x="384" y="64">PROFILE / CYBERSECURITY</text>
     <rect x="372" y="46" width="514" height="454" rx="12" fill="#161b22"
           fill-opacity="0.38" stroke="url(#edge)" stroke-opacity="0.42"/>
     <text class="hd" x="384" y="104">{html.escape(cfg["prompt_user"])}</text>
@@ -431,7 +431,7 @@ def generate_mobile_banner_svg(ascii_grid, cfg):
     <text class="lbl" x="22" y="58">PORTRAIT / {html.escape(cfg["name"].upper())}</text>
 {art_block_str}
 
-    <text class="lbl" x="20" y="492">PROFILE / SOC ANALYST</text>
+    <text class="lbl" x="20" y="492">PROFILE / CYBERSECURITY</text>
     <rect x="10" y="480" width="420" height="402" rx="12" fill="#161b22"
           fill-opacity="0.38" stroke="url(#edge)" stroke-opacity="0.42"/>
     <text class="hd" x="20" y="522">{html.escape(cfg["prompt_user"])}</text>
