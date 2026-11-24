@@ -25,7 +25,7 @@
 
 ## Overview
 
-This project demonstrates the end-to-end workflow of a Tier 1 Security Operations Center analyst: simulate attack activity, detect it with a SIEM, investigate the evidence, map behavior to the MITRE ATT&CK framework, and document response actions.
+This project simulates the end-to-end workflow of a Tier 1 SOC analyst: simulate attack activity, detect it with a SIEM, investigate the evidence, map behavior to the MITRE ATT&CK framework, and document response actions.
 
 The lab combines **Wazuh** for live endpoint monitoring with **ThreatScope**, a custom threat-detection engine used to perform deeper analysis of exported Windows Event Logs. All activity was conducted in an isolated lab environment for defensive learning and portfolio demonstration.
 
@@ -35,10 +35,13 @@ The lab combines **Wazuh** for live endpoint monitoring with **ThreatScope**, a 
 | --- | --- |
 | Attack scenarios simulated | 3 |
 | Wazuh events from SSH brute-force activity | 339 |
-| Wazuh events from privilege-escalation activity | 407 |
-| ThreatScope rules available | 144 built-in + 1 Sigma rule |
+| Wazuh events in the privilege-escalation window (agent 001, 24 h) | 407 |
+| ThreatScope rules available | 143 built-in + 1 Sigma rule (144 patterns loaded at analysis time) |
 | PowerShell log lines analyzed | 1,008 |
-| MITRE ATT&CK techniques observed | 12 across 6 tactics |
+| ThreatScope security-log analysis | 17,697 parsed EVTX records; 57 IOCs extracted |
+| MITRE ATT&CK techniques observed | 12 technique entries across 8 tactics |
+
+> **Reading the numbers:** ThreatScope v3.0.0 ships **143 built-in detection rules across 24 categories** (ready-state screenshot, Figure 07). Loading the 1 Sigma rule brings the analysis-time totals to **144 patterns across 25 categories**, which is the figure the tool prints in its reports — so "144" is the loaded-pattern total, not a built-in rule count. ThreatScope reports parsed EVTX event records as "lines"; the analyzed files are binary Windows Event Logs (`.evtx`), not text files. The 339-hit and 407-hit Wazuh queries cover overlapping 24-hour windows, and the 407-hit view includes SSH brute-force rows, so the two counts are **not additive** — no combined total is claimed.
 | Threat-intelligence output | JSON reports and STIX 2.1 bundles |
 
 ## Lab Architecture
@@ -90,13 +93,13 @@ A PowerShell `IEX` download-cradle execution attempt was captured in Windows Pow
 
 ### 3. Privilege escalation through sudo abuse
 
-Post-exploitation behavior was simulated by enumerating sudo permissions and accessing sensitive files on Ubuntu. Wazuh captured **407 events**, including sudo-to-root execution and PAM session activity.
+Post-exploitation behavior was simulated by enumerating sudo permissions and accessing sensitive files on Ubuntu. Wazuh Threat Hunting returned **407 hits** for the monitored agent in the 24-hour window around the privilege-escalation simulation, including sudo-to-root execution (rule 5402), first-time sudo (5403) and PAM session activity (5501/5502). This window overlaps the SSH brute-force window, so the 339 and 407 counts are not additive.
 
 **Response focus:** assess sensitive-file exposure, audit sudo entitlements, restrict privileged access, and enable stronger audit coverage.
 
 ## MITRE ATT&CK Coverage
 
-The combined detection workflow identified 12 techniques spanning six ATT&CK tactics.
+The consolidated coverage table below lists 12 technique entries spanning eight ATT&CK tactics. Sub-techniques are grouped under their parent technique (`T1110`/`T1110.001` and `T1134`/`T1134.001`); scenario tables list additional observed IDs (`T1203`, `T1078.003`, `T1552.001`).
 
 | Tactic | Representative techniques |
 | --- | --- |
@@ -106,6 +109,8 @@ The combined detection workflow identified 12 techniques spanning six ATT&CK tac
 | Privilege Escalation | `T1548.003` Sudo and Sudo Caching, `T1134` Access Token Manipulation |
 | Defense Evasion | `T1027` Obfuscated Files, `T1564.004` NTFS Alternate Data Streams |
 | Command and Control | `T1090.003` Multi-hop Proxy |
+| Lateral Movement | `T1021.004` Remote Services: SSH |
+| Discovery | `T1087.001` Local Account Discovery, `T1082` System Information Discovery |
 
 ## Evidence Gallery
 
@@ -138,7 +143,7 @@ Every screenshot used in the project report is included below. They provide an a
   </tr>
   <tr>
     <td align="center"><img src="images/image13.png" alt="Wazuh MITRE ATT&CK dashboard filtered to privilege escalation" /><br /><sub><strong>13 · Privilege-escalation mapping</strong><br />ATT&CK view focused on sudo and valid-account activity.</sub></td>
-    <td align="center"><img src="images/image14.png" alt="ThreatScope full security-log analysis report" /><br /><sub><strong>14 · Full log-analysis report</strong><br />ThreatScope summary for a 17,697-line security-log analysis.</sub></td>
+    <td align="center"><img src="images/image14.png" alt="ThreatScope full security-log analysis report" /><br /><sub><strong>14 · Full log-analysis report</strong><br />ThreatScope summary for a 17,697-record security-log analysis (security_logs.evtx, 21 MB; the count is reported as "lines" by ThreatScope v3.0.0).</sub></td>
   </tr>
 </table>
 
@@ -169,7 +174,7 @@ This repository contains documentation and evidence from an authorized, isolated
 
 ## Author
 
-**Mohamed Sabry** · SOC Analyst · DFIR<br>
+**Mohamed Sabry Hamdan** · Cybersecurity Analyst | SOC | Incident Response | DFIR | Detection<br>
 GitHub: [@0xsabry](https://github.com/0xsabry)
 
 ---
