@@ -466,11 +466,11 @@
         <div class="meta-grid">
             <div class="meta-item">
                 <div class="meta-label">Author</div>
-                <div class="meta-value">Mohamed Sabry (0xSABRY)</div>
+                <div class="meta-value">Mohamed Sabry Hamdan (0xSABRY)</div>
             </div>
             <div class="meta-item">
                 <div class="meta-label">Role</div>
-                <div class="meta-value">SOC Analyst | DFIR</div>
+                <div class="meta-value">Cybersecurity Analyst | SOC · DFIR</div>
             </div>
             <div class="meta-item">
                 <div class="meta-label">Date</div>
@@ -502,7 +502,7 @@
         <section class="section">
             <div class="section-number">Section 01</div>
             <h2>Project Overview</h2>
-            <p>This project demonstrates the end-to-end workflow of a Security Operations Center (SOC) Tier 1 analyst — from attack simulation to detection, analysis, and response. The lab replicates a real-world monitored environment using open-source tools, a custom threat detection engine (ThreatScope), and a SIEM platform (Wazuh).</p>
+            <p>This project simulates the end-to-end workflow of a Tier 1 SOC analyst — from attack simulation to detection, analysis, and response. The lab replicates a real-world monitored environment using open-source tools, a custom threat detection engine (ThreatScope), and a SIEM platform (Wazuh).</p>
             <p>Three distinct attack scenarios were executed against a live Ubuntu Server endpoint. Each scenario was detected, triaged, and mapped to the MITRE ATT&amp;CK framework. ThreatScope was used to perform deep log analysis on Windows Event Logs captured during the attacks, producing STIX 2.1 threat intelligence bundles and JSON reports.</p>
 
             <div class="table-wrapper">
@@ -648,7 +648,7 @@
             </figure>
 
             <h3>4.2 Analysis — ThreatScope v3.0.0</h3>
-            <p>Windows PowerShell Operational logs were exported using <code>wevtutil</code> and analyzed by ThreatScope. The engine processed <strong>1,008 log lines</strong> using <strong>144 detection rules</strong> and <strong>1 Sigma rule</strong>, producing a CRITICAL threat assessment.</p>
+            <p>Windows PowerShell Operational logs were exported using <code>wevtutil</code> and analyzed by ThreatScope. The engine processed <strong>1,008 log lines</strong> using <strong>143 built-in detection rules</strong> and <strong>1 Sigma rule</strong> (144 patterns loaded at analysis time), producing a CRITICAL threat assessment. ThreatScope reports parsed EVTX event records as "lines"; the analyzed files are binary Windows Event Logs (.evtx), not text files. The GUI ready state shows 143 built-in rules across 24 categories; loading the Sigma rule brings the analysis-time totals to 144 patterns across 25 categories.</p>
 
             <div class="metric-row">
                 <div class="metric-card">
@@ -712,7 +712,7 @@
 
             <figure class="screenshot">
                 <img src="images/image11.png" alt="ThreatScope recommendations and report footer">
-                <figcaption><strong>Figure 4.6</strong> — ThreatScope recommendations: block C2 IPs/domains, urgent web shell remediation — 144 detection rules, 25 categories</figcaption>
+                <figcaption><strong>Figure 4.6</strong> — ThreatScope recommendations: block C2 IPs/domains, urgent web shell remediation — 144 detection rules, 25 categories (144 patterns loaded at analysis time: 143 built-in + 1 Sigma rule)</figcaption>
             </figure>
 
             <h3>4.4 Incident Response Actions</h3>
@@ -746,7 +746,7 @@
             </div>
 
             <h3>5.2 Detection — Wazuh SIEM</h3>
-            <p>Wazuh detected all privilege escalation activity through the installed agent. A total of <strong>407 events</strong> were recorded, with critical alerts for sudo-to-root execution and first-time sudo usage flagged immediately.</p>
+            <p>Wazuh Threat Hunting returned <strong>407 hits</strong> for the monitored agent in the 24-hour window around the privilege-escalation simulation, with critical alerts for sudo-to-root execution (rule 5402), first-time sudo (5403) and PAM session activity (5501/5502) flagged immediately. This window overlaps the SSH brute-force window, so the 339 and 407 counts are not additive.</p>
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -808,7 +808,7 @@
         <section class="section">
             <div class="section-number">Section 06</div>
             <h2>Overall MITRE ATT&amp;CK Coverage</h2>
-            <p>Across all three scenarios, the combined detection pipeline (Wazuh + ThreatScope) identified activity mapped to <strong>12 distinct MITRE ATT&amp;CK techniques</strong> spanning <strong>6 tactics</strong>.</p>
+            <p>Across all three scenarios, the combined detection pipeline (Wazuh + ThreatScope) identified activity mapped to <strong>12 technique entries</strong> spanning <strong>8 tactics</strong>. Sub-techniques are grouped under their parent technique (<span class="mitre-id">T1110</span>/<span class="mitre-id">T1110.001</span> and <span class="mitre-id">T1134</span>/<span class="mitre-id">T1134.001</span>); scenario tables list additional observed IDs (<span class="mitre-id">T1203</span>, <span class="mitre-id">T1078.003</span>, <span class="mitre-id">T1552.001</span>).</p>
 
             <div class="table-wrapper">
                 <table>
@@ -841,7 +841,7 @@
 
             <figure class="screenshot">
                 <img src="images/image14.png" alt="ThreatScope full report — security_logs.evtx">
-                <figcaption><strong>Figure 7.1</strong> — ThreatScope v3.0.0 full analysis report for security_logs.evtx (21 MB): 17,697 lines processed, 100% CRITICAL threat score, 7 findings, 7 MITRE techniques, 57 IOCs extracted</figcaption>
+                <figcaption><strong>Figure 7.1</strong> — ThreatScope v3.0.0 full analysis report for security_logs.evtx (21 MB): 17,697 records processed (parsed from the EVTX file; reported as "lines" by ThreatScope v3.0.0), 100% CRITICAL threat score, 7 findings, 7 MITRE techniques, 57 IOCs extracted</figcaption>
             </figure>
 
             <div class="table-wrapper">
@@ -850,7 +850,7 @@
                         <tr><th>Capability</th><th>Details</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Detection Rules</strong></td><td>144 built-in rules + 1 Sigma rule (custom)</td></tr>
+                        <tr><td><strong>Detection Rules</strong></td><td>143 built-in rules + 1 Sigma rule (custom); 144 patterns loaded at analysis time</td></tr>
                         <tr><td><strong>Log Support</strong></td><td>.evtx, .log, .txt (Windows Event Logs)</td></tr>
                         <tr><td><strong>MITRE Mapping</strong></td><td>Automatic technique mapping per finding</td></tr>
                         <tr><td><strong>IOC Extraction</strong></td><td>IPs, domains, URLs, hashes, CVEs</td></tr>
@@ -876,11 +876,11 @@
                     <tbody>
                         <tr><td><strong>SIEM Deployment</strong></td><td>Deployed and configured Wazuh with live agent monitoring</td></tr>
                         <tr><td><strong>Threat Detection</strong></td><td>Detected SSH brute force, PowerShell abuse, and privilege escalation</td></tr>
-                        <tr><td><strong>Log Analysis</strong></td><td>Analyzed 17,000+ log lines using custom detection engine (ThreatScope)</td></tr>
-                        <tr><td><strong>MITRE ATT&amp;CK</strong></td><td>Mapped 12 techniques across 6 tactics from real attack data</td></tr>
-                        <tr><td><strong>Threat Intelligence</strong></td><td>Generated STIX 2.1 bundles and extracted 57+ IOCs</td></tr>
+                        <tr><td><strong>Log Analysis</strong></td><td>Analyzed 17,697 parsed event records from security_logs.evtx (21 MB) with ThreatScope</td></tr>
+                        <tr><td><strong>MITRE ATT&amp;CK</strong></td><td>Mapped 12 technique entries across 8 tactics from real attack data</td></tr>
+                        <tr><td><strong>Threat Intelligence</strong></td><td>Generated STIX 2.1 bundles; extracted 57 IOCs from the security-log analysis and 16 from the PowerShell analysis</td></tr>
                         <tr><td><strong>Incident Response</strong></td><td>Documented triage, impact assessment, and remediation per scenario</td></tr>
-                        <tr><td><strong>Detection Engineering</strong></td><td>Built and applied 144 custom detection rules in ThreatScope</td></tr>
+                        <tr><td><strong>Detection Engineering</strong></td><td>Applied ThreatScope's 143 built-in detection rules + 1 Sigma rule</td></tr>
                         <tr><td><strong>Linux/Windows Admin</strong></td><td>Configured VMs, networking, agents, and log collection pipelines</td></tr>
                     </tbody>
                 </table>
@@ -891,7 +891,7 @@
 
     <!-- ═══════════ FOOTER ═══════════ -->
     <footer class="footer">
-        Report produced by <strong>Mohamed Sabry (0xSABRY)</strong> | SOC Analyst | DFIR | March 2026
+        Report produced by <strong>Mohamed Sabry Hamdan (0xSABRY)</strong> | Cybersecurity Analyst | SOC | DFIR | March 2026
     </footer>
 
 </div>
