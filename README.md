@@ -41,7 +41,7 @@ The lab combines **Wazuh** for live endpoint monitoring with **ThreatScope**, a 
 | ThreatScope security-log analysis | 17,697 parsed EVTX records; 57 IOCs extracted |
 | MITRE ATT&CK techniques observed | 12 technique entries across 8 tactics |
 
-> **Reading the numbers:** ThreatScope v3.0.0 ships **143 built-in detection rules across 24 categories** (ready-state screenshot, Figure 07). Loading the 1 Sigma rule brings the analysis-time totals to **144 patterns across 25 categories**, which is the figure the tool prints in its reports — so "144" is the loaded-pattern total, not a built-in rule count. ThreatScope reports parsed EVTX event records as "lines"; the analyzed files are binary Windows Event Logs (`.evtx`), not text files. The 339-hit and 407-hit Wazuh queries cover overlapping 24-hour windows, and the 407-hit view includes SSH brute-force rows, so the two counts are **not additive** — no combined total is claimed.
+> **Reading the numbers:** ThreatScope v3.0.0 ships **143 built-in detection rules across 24 categories** (ready-state screenshot, Figure 07). Loading the 1 Sigma rule brings the analysis-time totals to **144 patterns across 25 categories**, which is the figure the tool prints in its reports — so "144" is the loaded-pattern total, not a built-in rule count. ThreatScope reports parsed EVTX event records as "lines"; the analyzed files are binary Windows Event Logs (`.evtx`), not text files. The 339-hit and 407-hit Wazuh queries cover overlapping 24-hour windows, and the 407-hit view includes SSH brute-force rows, so the two counts are **not additive** — no combined total is claimed. Counts come from single runs of each scenario, not averages.
 | Threat-intelligence output | JSON reports and STIX 2.1 bundles |
 
 ## Lab Architecture
