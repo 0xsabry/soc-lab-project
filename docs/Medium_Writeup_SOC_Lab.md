@@ -55,7 +55,7 @@ The lab environment was designed in an isolated virtual network to simulate an e
 ## 2. Attack Scenario 1: SSH Password Brute-Force Detection
 
 ### The Attack Simulation
-From the attacker machine (WSL2 Kali), I launched a dictionary-based SSH brute-force attack against the monitored Ubuntu Server endpoint using **Hydra**:
+From the attacker machine (WSL2 Ubuntu), I launched a dictionary-based SSH brute-force attack against the monitored Ubuntu Server endpoint using **Hydra**:
 
 ```bash
 hydra -l root -P /root/rockyou.txt ssh://192.168.1.9 -t 4 -V
