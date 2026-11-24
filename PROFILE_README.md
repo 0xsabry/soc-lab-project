@@ -98,7 +98,7 @@
 | Project | Description | Stack / Focus |
 | :--- | :--- | :--- |
 | 🔍 **[ThreatScopeX](https://github.com/0xsabry/ThreatScopeX)** | Advanced log intelligence and threat detection engine with 143 built-in detection rules (v3.0.0) | Python, MITRE ATT&CK, Sigma, STIX 2.1 |
-| 📑 **[IR-Report-Generator](https://github.com/0xsabry/IR-Report-Generator)** | Browser-based incident response reporting tool supporting 40+ security tool artifacts | HTML5, CSS3, JS, MITRE Navigator |
+| 📑 **[IR-Report-Generator](https://github.com/0xsabry/IR-Report-Generator)** | Browser-based incident response reporting tool with 60 named security-tool options | HTML5, CSS3, JS, MITRE Navigator |
 | 🛡️ **[SOC Lab Project](https://0xsabry.github.io/soc-lab-project/)** | End-to-end enterprise attack simulation, Wazuh detection, and automated IR simulation | Wazuh, Sysmon, EventLogs, Ubuntu, PowerShell |
 
 <p align="center">
