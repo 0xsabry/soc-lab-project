@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="556"
      viewBox="0 0 900 556" role="img"
-     aria-label="Mohamed Sabry Hamdan - SOC Analyst &amp; DFIR Specialist">
-  <title>Mohamed Sabry Hamdan - SOC Analyst &amp; DFIR Specialist</title>
+     aria-label="Mohamed Sabry Hamdan - Cybersecurity Analyst | SOC | DFIR">
+  <title>Mohamed Sabry Hamdan - Cybersecurity Analyst | SOC | DFIR</title>
 
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -171,7 +171,7 @@
       <text x="118.24 122 125.76 129.52 133.28 137.04 140.8 144.56 148.32 152.08 155.84 159.6 163.36 167.12 170.88 174.64 178.4 182.16 185.92 189.68 193.44 197.2 200.96 204.72 208.48 212.24 216 219.76 223.52 227.28 231.04 234.8 238.56 242.32 246.08" y="484.28">+nOpB8QQMkwqmBkhwhwwkMqbmBBB8MkqOa*</text>
     </g>
 
-    <text class="lbl" x="384" y="64">PROFILE / SOC ANALYST</text>
+    <text class="lbl" x="384" y="64">PROFILE / CYBERSECURITY</text>
     <rect x="372" y="46" width="514" height="454" rx="12" fill="#161b22"
           fill-opacity="0.38" stroke="url(#edge)" stroke-opacity="0.42"/>
     <text class="hd" x="384" y="104">0xsabry@soc</text>
@@ -180,10 +180,10 @@
       <text class="v" x="538" y="124">Mohamed Sabry Hamdan</text>
       <text class="k" x="394" y="144">Role:</text>
       <line class="ld" x1="478" y1="141" x2="530" y2="141"/>
-      <text class="v" x="538" y="144">SOC Analyst &amp; DFIR Specialist</text>
+      <text class="v" x="538" y="144">Cybersecurity Analyst | SOC | DFIR</text>
       <text class="k" x="394" y="164">Based:</text>
       <line class="ld" x1="478" y1="161" x2="530" y2="161"/>
-      <text class="v" x="538" y="164">Cairo, Egypt</text>
+      <text class="v" x="538" y="164">Egypt</text>
       <text class="k" x="394" y="184">Mode:</text>
       <line class="ld" x1="478" y1="181" x2="530" y2="181"/>
       <text class="v" x="538" y="184">Threat Hunting / SIEM / Incident Response</text>

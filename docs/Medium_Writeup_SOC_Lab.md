@@ -15,7 +15,7 @@ In modern Security Operations Centers (SOC), Tier 1 analysts must quickly detect
 
 As part of my cybersecurity portfolio, I built an automated **SOC Analyst Threat Detection & Incident Response Lab**. This project combines **Wazuh SIEM 4.14.4** for live endpoint telemetric monitoring with **ThreatScope v3.0.0** — a custom threat detection engine — to simulate, detect, investigate, and respond to real-world attack vectors across Linux and Windows environments.
 
-In this writeup, I’ll walk through how I executed **3 realistic attack scenarios**, ingested **740+ security events**, mapped behavior to **12 MITRE ATT&CK techniques**, and produced actionable threat intelligence and remediation guidance.
+In this writeup, I’ll walk through how I executed **3 realistic attack scenarios**, ingested **339 SSH brute-force events** and **407 agent events** in the privilege-escalation window, mapped behavior to **12 technique entries across 8 ATT&CK tactics**, and produced actionable threat intelligence and remediation guidance.
 
 ---
 
@@ -38,7 +38,7 @@ The lab environment was designed in an isolated virtual network to simulate an e
 └────────────▲─────────────┘
              │
 ┌────────────┴─────────────┐
-│ WSL2 (Kali Linux)        │
+│ WSL2 (Ubuntu)            │
 │ • Hydra Attack Tooling   │
 └──────────────────────────┘
 ```
@@ -46,19 +46,19 @@ The lab environment was designed in an isolated virtual network to simulate an e
 ### Infrastructure Components
 - **SIEM Platform:** Wazuh Manager & Dashboard (v4.14.4)
 - **Monitored Endpoint:** Ubuntu Server 24.04 LTS with Wazuh Agent
-- **Threat Engine:** ThreatScope v3.0.0 (144 built-in detection rules + Sigma support)
-- **Attack Platform:** Kali Linux / WSL2 (Hydra, PowerShell IEX cradles, privilege abuse)
-- **Framework:** MITRE ATT&CK v14
+- **Threat Engine:** ThreatScope v3.0.0 (143 built-in detection rules + 1 Sigma rule)
+- **Attack Platform:** WSL2 Ubuntu (Hydra, PowerShell IEX cradles, privilege abuse)
+- **Framework:** MITRE ATT&CK
 
 ---
 
 ## 2. Attack Scenario 1: SSH Password Brute-Force Detection
 
 ### The Attack Simulation
-From the attacker machine (WSL2 Kali), I launched a dictionary-based SSH brute-force attack against the monitored Ubuntu Server endpoint using **Hydra**:
+From the attacker machine (WSL2 Ubuntu), I launched a dictionary-based SSH brute-force attack against the monitored Ubuntu Server endpoint using **Hydra**:
 
 ```bash
-hydra -l victim_user -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.50 -t 4
+hydra -l root -P /root/rockyou.txt ssh://192.168.1.9 -t 4 -V
 ```
 
 ### SIEM Detection & Telemetry Analysis
@@ -71,7 +71,7 @@ The Wazuh Agent captured the authentication flood in `/var/log/auth.log` and for
 - **MITRE ATT&CK Mapping:** Credential Access — `T1110` (Brute Force) & `T1110.001` (Password Guessing).
 
 ### Tier 1 Analyst Response & Hardening
-1. **Source Isolation:** Identify external attacking IP (`192.168.1.105`) and block via firewall/fail2ban.
+1. **Source Isolation:** Identify the attacking source host and block it via firewall/fail2ban.
 2. **Account Audit:** Verify that no valid authentication occurred during the dictionary flood.
 3. **Remediation:** Enforce SSH key-based authentication (`PasswordAuthentication no`), disable root login (`PermitRootLogin no`), and configure port rate limiting.
 
@@ -120,7 +120,7 @@ Wazuh captured the privilege escalation attempt in real time via PAM and auditd 
 
 ![Privilege Escalation Detection](https://raw.githubusercontent.com/0xsabry/soc-lab-project/main/images/image12.png)
 
-- **Total Events Ingested:** 407 security events
+- **Total Events Ingested:** 407 hits for the monitored agent in the 24-hour window around the simulation (including sudo-to-root, first-time sudo and PAM session activity)
 - **Triggered Wazuh Rules:** Rule `5402` (Successful sudo execution) and Rule `5501` (PAM session opened for root).
 - **MITRE ATT&CK Mapping:** Privilege Escalation — `T1548.003` (Sudo and Sudo Caching) & `T1134` (Access Token Manipulation).
 
@@ -128,12 +128,12 @@ Wazuh captured the privilege escalation attempt in real time via PAM and auditd 
 
 ## 5. Summary of MITRE ATT&CK Matrix Coverage
 
-Across the 3 simulated scenarios, the combined SOC detection workflow successfully identified **12 adversary techniques across 6 ATT&CK tactics**:
+Across the 3 simulated scenarios, the combined SOC detection workflow successfully identified **12 technique entries across 8 ATT&CK tactics**. The table below shows a representative technique per tactic; the full 12-entry consolidated table is in the project report.
 
 | Tactic | Technique ID | Technique Name | Detection Mechanism |
 | --- | --- | --- | --- |
 | **Credential Access** | `T1110.001` | Password Guessing | Wazuh Rule 5712 (SSH Brute Force) |
-| **Execution** | `T1059.001` | PowerShell Command Execution | ThreatScope Rule PS-008 & Event ID 4104 |
+| **Execution** | `T1059.001` | PowerShell Command Execution | ThreatScope PowerShell rules & Event ID 4104 |
 | **Privilege Escalation** | `T1548.003` | Sudo and Sudo Caching | Wazuh Rule 5402 (PAM Sudo Session) |
 | **Defense Evasion** | `T1027` | Obfuscated Files or Information | ThreatScope Obfuscation Engine |
 | **Persistence** | `T1505.003` | Web Shell Payload | ThreatScope WebShell Rules |
@@ -152,4 +152,4 @@ Explore the complete interactive project, live web dashboard, and PDF reports be
 - 📄 **Full SOC PDF Report:** [Download PDF](https://raw.githubusercontent.com/0xsabry/soc-lab-project/main/SOC_Lab_Project_0xSABRY.pdf)
 
 ---
-*Thank you for reading! Connect with me on [LinkedIn](https://www.linkedin.com/) or explore my cybersecurity repositories on [GitHub](https://github.com/0xsabry).*
+*Thank you for reading! Connect with me on [LinkedIn](https://www.linkedin.com/in/mohamed-sabry-hamdan/) or explore my cybersecurity repositories on [GitHub](https://github.com/0xsabry).*
